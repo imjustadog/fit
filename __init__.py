@@ -73,7 +73,20 @@ class Code_MainWindow(Ui_MainWindow):
         sender = self.sender()
         sender.setEditable(False)
         sender.clear()
-        string_list = ['cat', 'dog', text]
+
+        sql = "SELECT `CLIENT_NAME` FROM `client` WHERE `CLIENT_NAME` LIKE '%s%%' ORDER BY CLIENT_NAME" % text
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            res = self.cursor.fetchall()
+
+        except:
+            print 'error'
+            self.db.rollback()
+
+        string_list = [text]
+        for x in res:
+            string_list.append(x[0])
         sender.addItems(string_list)
         sender.setCurrentIndex(0)
         sender.setEditable(True)
@@ -81,7 +94,6 @@ class Code_MainWindow(Ui_MainWindow):
 
     @pyqtSlot(dict)
     def getDictNew(self, newParam):
-        self.cursor = self.db.cursor()
         name = str(newParam['name'])
         sql = "INSERT INTO CLIENT(CLIENT_NAME) VALUES ('%s')" % name
         try:
@@ -99,6 +111,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     ui_main = Code_MainWindow()
     ui_main.db = MySQLdb.connect("127.0.0.1", "root", "zsty8059", "fit", charset='utf8')
+    ui_main.cursor = ui_main.db.cursor()
     ui_main.show()
 sys.exit(app.exec_())
 ui_main.db.close()
