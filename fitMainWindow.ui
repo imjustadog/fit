@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>609</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>20</y>
+      <y>10</y>
       <width>54</width>
       <height>21</height>
      </rect>
@@ -27,21 +27,11 @@
      <string>姓名</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>20</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>20</y>
+      <x>460</x>
+      <y>10</y>
       <width>21</width>
       <height>21</height>
      </rect>
@@ -50,11 +40,11 @@
      <string>第</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEdit_times">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>20</y>
+      <x>480</x>
+      <y>10</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -63,8 +53,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>20</y>
+      <x>540</x>
+      <y>10</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -73,11 +63,11 @@
      <string>次训练</string>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QDateEdit" name="dateEdit_date">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>20</y>
+      <x>650</x>
+      <y>10</y>
       <width>110</width>
       <height>22</height>
      </rect>
@@ -86,8 +76,8 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>20</y>
+      <x>610</x>
+      <y>10</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -96,39 +86,39 @@
      <string>日期</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>510</x>
-      <y>530</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pushButton_upload">
     <property name="geometry">
      <rect>
       <x>600</x>
-      <y>530</y>
+      <y>540</y>
       <width>75</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>提交</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_clear">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>540</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>清空</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>60</y>
-      <width>631</width>
-      <height>451</height>
+      <y>40</y>
+      <width>721</width>
+      <height>491</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -140,6 +130,19 @@
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>
+   </widget>
+   <widget class="QComboBox" name="comboBox_name">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>10</y>
+      <width>81</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>true</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -155,13 +158,13 @@
     <property name="title">
      <string>选项</string>
     </property>
-    <addaction name="actionNew"/>
+    <addaction name="action_New"/>
     <addaction name="action_statistics"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionNew">
+  <action name="action_New">
    <property name="text">
     <string>新建</string>
    </property>

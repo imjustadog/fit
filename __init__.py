@@ -28,7 +28,11 @@ class Code_MainWindow(Ui_MainWindow):
     def __init__(self, parent=None):
         super(Code_MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.actionNew.triggered.connect(self.openNewDlg)
+        self.dateEdit_date.setDate(QDate.currentDate())
+        self.action_New.triggered.connect(self.openNewDlg)
+        self.comboBox_name.editTextChanged.connect(self.editName)
+        self.pushButton_upload.clicked.connect(self.upLoad)
+        self.pushButton_clear.clicked.connect(self.clearAll)
 
         try:
             self.HeaderList = []
@@ -39,7 +43,7 @@ class Code_MainWindow(Ui_MainWindow):
             self.HeaderList.append(u"组间休息")
             self.HeaderList.append(u"总时间")
 
-            self.tableWidget.setRowCount(10)
+            self.tableWidget.setRowCount(15)
             self.tableWidget.setColumnCount(6)
             self.tableWidget.setHorizontalHeaderLabels(self.HeaderList)
 
@@ -48,13 +52,13 @@ class Code_MainWindow(Ui_MainWindow):
                 headItem.setBackgroundColor(QColor(0, 0, 200))
                 headItem.setTextColor(QColor(0, 0, 200))
 
-            for i in range(10):
+            for i in range(15):
                 combo = QComboBox()
                 combo.setEditable(True)
                 self.tableWidget.setCellWidget(i, 0, combo)
                 combo.editTextChanged.connect(self.editChanged)
 
-            self.tableWidget.setColumnWidth(0, 350)
+            self.tableWidget.setColumnWidth(0, 468)
             self.tableWidget.setColumnWidth(1, 40)
             self.tableWidget.setColumnWidth(2, 40)
             self.tableWidget.setColumnWidth(3, 60)
@@ -69,12 +73,99 @@ class Code_MainWindow(Ui_MainWindow):
         ui_New.show()
         ui_New.signal_getNewparam.connect(self.getDictNew)
 
+    def upLoad(self):
+        name = self.comboBox_name.currentText()
+        for i in range(15):
+            event = self.tableWidget.cellWidget(i, 0)
+            if event:
+                event = event.currentText()
+            else:
+                event = ''
+            if event != '':
+
+                weight = self.tableWidget.item(i, 1)
+                if weight:
+                    weight = int(weight.text())
+                else:
+                    weight = 0
+
+                group = self.tableWidget.item(i, 2)
+                if group:
+                    group = int(group.text())
+                else:
+                    group = 0
+
+                times = self.tableWidget.item(i, 3)
+                if times:
+                    times = int(times.text())
+                else:
+                    times = 0
+
+                breaks = self.tableWidget.item(i, 4)
+                if breaks:
+                    breaks = int(breaks.text())
+                else:
+                    breaks = 0
+
+                total = self.tableWidget.item(i, 5)
+                if total:
+                    total = int(total.text())
+                else:
+                    total = 0
+
+                sql = "INSERT INTO `DATA`(`CLIENT_NAME`,`EVENT_NAME`,`WEIGHT`,`GROUP`,`TIMES`,`BREAK`,`TOTALTIME`) VALUES ('%s','%s',%d, %d,%d,%d,%d)" % (name,event,weight,group,times,breaks,total)
+
+                try:
+                    self.cursor.execute(sql)
+                    self.db.commit()
+                    res = self.cursor.fetchall()
+                except:
+                    print 'error'
+                    self.db.rollback()
+
+            else:
+                break
+
+    def clearAll(self):
+        self.comboBox_name.clear()
+        self.lineEdit_times.clear()
+        self.tableWidget.clearContents()
+        for i in range(10):
+            combo = QComboBox()
+            combo.setEditable(True)
+            self.tableWidget.setCellWidget(i, 0, combo)
+            combo.editTextChanged.connect(self.editChanged)
+
+
+    def editName(self, text):
+        self.comboBox_name.setEditable(False)
+        self.comboBox_name.clear()
+
+        sql = "SELECT `CLIENT_NAME` FROM `client` WHERE `CLIENT_NAME` LIKE '%s%%' ORDER BY CLIENT_NAME" % text
+        try:
+            self.cursor.execute(sql)
+            self.db.commit()
+            res = self.cursor.fetchall()
+        except:
+            print 'error'
+            self.db.rollback()
+        string_list = [text]
+        for x in res:
+            string_list.append(x[0])
+        self.comboBox_name.addItems(string_list)
+        self.comboBox_name.setCurrentIndex(0)
+        self.comboBox_name.setEditable(True)
+        cursor = self.comboBox_name.cursor()
+        cursor.movePosition(QTextCursor.End)
+        self.comboBox_name.setCursor()
+
+
     def editChanged(self, text):
         sender = self.sender()
         sender.setEditable(False)
         sender.clear()
 
-        sql = "SELECT `CLIENT_NAME` FROM `client` WHERE `CLIENT_NAME` LIKE '%s%%' ORDER BY CLIENT_NAME" % text
+        sql = "SELECT `EVENT_NAME` FROM `event` WHERE `EVENT_NAME` LIKE '%s%%' ORDER BY EVENT_NAME" % text
         try:
             self.cursor.execute(sql)
             self.db.commit()
